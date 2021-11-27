@@ -29,14 +29,17 @@ public class TicketViewer {
         List<Ticket> ticketList = new ArrayList<>(tickets.values());
         print25Tickets(ticketList, listPos);
         while (true) {
-            if (listPos == 0) {
-                System.out.println("Type 'next' to show the next page or 'quit' to exit");
+            if (tickets.size() <= 25) {
+                System.out.println("Type 'quit' to return to menu");
+            }
+            else if (listPos == 0) {
+                System.out.println("Type 'next' to show the next page or 'quit' to return to menu");
             }
             else if (listPos + 25 >= tickets.size()) {
-                System.out.println("Type 'prev' to show the previous page or 'quit' to exit");
+                System.out.println("Type 'prev' to show the previous page or 'quit' to return to menu");
             }
             else {
-                System.out.println("Type 'next' to show the next page, 'prev' to show the previous page, or 'quit' to exit");
+                System.out.println("Type 'next' to show the next page, 'prev' to show the previous page, or 'quit' to return to menu");
             }
             String input = scanner.nextLine();
             if (input.equals("quit")) {
@@ -59,11 +62,17 @@ public class TicketViewer {
 
     public void printTicket() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Type ticket id");
-        int id = sc.nextInt();
+        boolean first = true;
+        int id = -1;
         do {
             try {
-                System.out.println("Type ticket id");
+                if (first) {
+                    System.out.println("Type ticket id");
+                }
+                else {
+                    System.out.println("Ticket not found, type a different id");
+                }
+                first = false;
                 id = sc.nextInt();
             } catch (InputMismatchException e) {
                 System.out.println("Invalid Input");

@@ -17,22 +17,7 @@ import java.util.Properties;
 
 public class RetrieveTickets {
     private Map<Integer, Ticket> tickets;
-
-    /**
-     * Loads the config properties file
-     * @return A Properties object containing the properties
-     * @throws IOException when unable to read config file
-     */
-    public Properties getProperties() {
-        Properties properties = new Properties();
-        try {
-            properties.load(Main.class.getResourceAsStream("/config.properties"));
-        } catch (IOException e) {
-            System.out.println("Unable to read config file");
-            e.printStackTrace();
-        }
-        return properties;
-    }
+    private int status;
 
     public RetrieveTickets() {
         tickets = new HashMap<>();
@@ -48,6 +33,7 @@ public class RetrieveTickets {
         try {
             while (true) {
                 HttpResponse<String> response = send_request(auth, uri);
+                status = response.statusCode();
                 JSONObject curr_json = new JSONObject(response.body());
                 for (int i = 0; i < curr_json.getJSONArray("tickets").length(); i++) {
                     tickets_json.put(curr_json.getJSONArray("tickets").getJSONObject(i));
@@ -65,6 +51,7 @@ public class RetrieveTickets {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            System.out.println("Connection Interrupted");
             e.printStackTrace();
         } catch (JSONException e) {
             System.out.println("Unable to parse JSON data");
@@ -90,7 +77,36 @@ public class RetrieveTickets {
         return response;
     }
 
+
+    /**
+     * Loads the config properties file
+     * @return A Properties object containing the properties
+     * @throws IOException when unable to read config file
+     */
+    public Properties getProperties() {
+        Properties properties = new Properties();
+        try {
+            properties.load(Main.class.getResourceAsStream("/config.properties"));
+        } catch (IOException e) {
+            System.out.println("Unable to read config file");
+            e.printStackTrace();
+        }
+        return properties;
+    }
+
+    /**
+     * A getter for the tickets map
+     * @return a map containing all tickets with their id as the key
+     */
     public Map<Integer, Ticket> getTickets() {
         return tickets;
+    }
+
+    /**
+     * A getter for the http status code
+     * @return the last http status code returned
+     */
+    public int getStatus() {
+        return status;
     }
 }

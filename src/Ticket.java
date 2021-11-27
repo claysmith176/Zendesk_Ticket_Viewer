@@ -37,7 +37,7 @@ public class Ticket {
         this.id = id;
         this.assignee_id = assignee_id;
         this.requester_id = requester_id;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd'T'hh:mm:ss'Z'");
         try {
             this.created_at = sdf.parse(created_at);
         } catch (ParseException e) {
@@ -63,7 +63,7 @@ public class Ticket {
         sb.append("Requester ID: " + requester_id + "\n");
         sb.append("Assignee ID: " + assignee_id + "\n");
         sb.append("Created On: " + created_at.toString() + "\n");
-        sb.append("Description:\n" + description);
+        sb.append("Description:\n" + description + "\n");
         return sb.toString();
     }
 }
